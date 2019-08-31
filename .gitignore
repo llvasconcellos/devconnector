@@ -86,3 +86,5 @@ deploy_config.json
 \.vscode/
 
 dist/
+
+config/keys.js
