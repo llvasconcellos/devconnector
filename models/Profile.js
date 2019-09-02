@@ -10,6 +10,7 @@ const ProfileSchema = new Schema({
   handle: {
     type: String,
     required: true,
+    unique: true,
     max: 40
   },
   company: {

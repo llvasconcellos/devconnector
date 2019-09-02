@@ -9,11 +9,13 @@ const PostSchema = new Schema({
   },
   text: {
     type: String,
-    required: true
+    required: true,
+    max: 300,
+    min: 10
   },
   name: {
     type: String,
-    required: true
+    required: false
   },
   avatar: {
     type: String,
@@ -35,7 +37,7 @@ const PostSchema = new Schema({
       },
       name: {
         type: String,
-        required: true
+        required: false
       },
       avatar: {
         type: String,
@@ -43,7 +45,7 @@ const PostSchema = new Schema({
       },
       date: {
         type: Date,
-        required: true
+        required: Date.now
       },
       likes: [
         {
