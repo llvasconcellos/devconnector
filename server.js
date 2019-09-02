@@ -19,7 +19,11 @@ const db = require("./config/keys").mongoURI;
 
 //Connect to mongoDB
 mongoose
-  .connect(db, { useNewUrlParser: true, useFindAndModify: false })
+  .connect(db, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.error(err));
 
