@@ -119,4 +119,67 @@ router.post(
   }
 );
 
+/**
+ * @route       POST api/posts/comment/:id
+ * @description Add comment to post
+ * @access      Private
+ */
+router.post(
+  "/comment/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = ValidatePostInput(req.body);
+
+    //Check validation
+    if (!isValid) {
+      return res.status(422).json(errors);
+    }
+
+    Post.findById(req.params.id).then(post => {
+      const newComment = {
+        text: req.body.text,
+        avatar: req.body.avatar,
+        user: req.user.id
+      };
+
+      //Add to comments array
+      post.comments.unshift(newComment);
+
+      // Save
+      post
+        .save()
+        .then(post => res.json(post))
+        .catch(err => res.status(500).json(err));
+    });
+  }
+);
+
+/**
+ * @route       DELETE api/posts/comment/:id/:comment_id
+ * @description Add comment to post
+ * @access      Private
+ */
+router.delete(
+  "/comment/:id/:comment_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findById(req.params.id).then(post => {
+      //Get remove index
+      const removeIndex = post.comments
+        .map(item => item.id)
+        .indexOf(req.params.comment_id);
+
+      console.log(removeIndex);
+
+      //splice out of array
+      post.comments.splice(removeIndex, 1);
+
+      post
+        .save()
+        .then(post => res.json(post))
+        .catch(err => res.status(500).json(err));
+    });
+  }
+);
+
 module.exports = router;
